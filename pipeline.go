@@ -45,6 +45,10 @@ func parsePipelineIntermediateFiles(s string) (map[string]string, error) {
 	return intermediateFiles, nil
 }
 
+type PipelineIntermediateFileMeta struct {
+	EnvKey string `json:"env_key"`
+}
+
 func PushPipelineIntermediateFiles(fileList, buildURL, buildAPIToken string) error {
 	intermediateFiles, err := parsePipelineIntermediateFiles(fileList)
 	if err != nil {
@@ -52,6 +56,7 @@ func PushPipelineIntermediateFiles(fileList, buildURL, buildAPIToken string) err
 	}
 
 	for pth, key := range intermediateFiles {
+		fmt.Println()
 		log.Donef("Pushing pipeline intermediate file: %s", pth)
 
 		var err error
@@ -60,9 +65,11 @@ func PushPipelineIntermediateFiles(fileList, buildURL, buildAPIToken string) err
 			return fmt.Errorf("failed to push pipeline intermediate file (%s): %s", pth, err)
 		}
 
-		meta := map[string]interface{}{
-			"env_key": key,
+		meta := PipelineIntermediateFileMeta{
+			EnvKey: key,
 		}
+
+		fmt.Printf("meta: %v\n", meta)
 
 		_, err = uploaders.DeployFileWithMeta(pth, buildURL, buildAPIToken, meta)
 		if err != nil {

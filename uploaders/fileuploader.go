@@ -11,9 +11,9 @@ func DeployFile(pth, buildURL, token string) (ArtifactURLs, error) {
 }
 
 // DeployFileWithMeta ...
-func DeployFileWithMeta(pth, buildURL, token string, meta map[string]interface{}) (ArtifactURLs, error) {
+func DeployFileWithMeta(pth, buildURL, token string, meta interface{}) (ArtifactURLs, error) {
 	var metaBytes []byte
-	if len(meta) != 0 {
+	if meta != nil {
 		var err error
 		metaBytes, err = json.Marshal(meta)
 		if err != nil {
