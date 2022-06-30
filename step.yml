@@ -69,6 +69,10 @@ toolkit:
   go:
     package_name: github.com/bitrise-steplib/steps-deploy-to-bitrise-io
 inputs:
+  - pipeline_intermediate_files:
+    opts:
+      title: Files to share between pipeline stages
+      summary: Intermediate files to share between pipeline stages.
   - deploy_path: "$BITRISE_DEPLOY_DIR"
     opts:
       title: "Deploy directory or file path"

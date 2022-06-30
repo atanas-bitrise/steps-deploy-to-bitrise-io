@@ -8,14 +8,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/bitrise-steplib/steps-deploy-to-bitrise-io/test"
-
 	"github.com/bitrise-io/envman/envman"
 	"github.com/bitrise-io/go-steputils/stepconf"
 	"github.com/bitrise-io/go-steputils/tools"
 	"github.com/bitrise-io/go-utils/log"
 	"github.com/bitrise-io/go-utils/pathutil"
 	"github.com/bitrise-io/go-utils/ziputil"
+	"github.com/bitrise-steplib/steps-deploy-to-bitrise-io/test"
 	"github.com/bitrise-steplib/steps-deploy-to-bitrise-io/uploaders"
 )
 
@@ -23,6 +22,7 @@ var fileBaseNamesToSkip = []string{".DS_Store"}
 
 // Config ...
 type Config struct {
+	PipelineIntermediateFiles     string `env:"pipeline_intermediate_files"`
 	BuildURL                      string `env:"build_url,required"`
 	APIToken                      string `env:"build_api_token,required"`
 	IsCompress                    string `env:"is_compress,opt[true,false]"`
@@ -74,6 +74,11 @@ func main() {
 	stepconf.Print(config)
 	fmt.Println()
 	log.SetEnableDebugLog(config.DebugMode)
+
+	log.Infof("Pushing pipeline intermediate files")
+	if err := PushPipelineIntermediateFiles(config.PipelineIntermediateFiles, config.BuildURL, config.APIToken); err != nil {
+		fail("Failed to push pipeline intermediate files: %s", err)
+	}
 
 	absDeployPth, err := pathutil.AbsPath(config.DeployPath)
 	if err != nil {
