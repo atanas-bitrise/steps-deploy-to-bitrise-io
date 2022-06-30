@@ -78,7 +78,7 @@ func PushPipelineIntermediateFiles(fileList, buildURL, buildAPIToken string) err
 		fakeMeta := map[string]interface{}{
 			"file_size_bytes": "",
 			"app_info":        string(b),
-			"scheme":          "",
+			"scheme":          string(b),
 		}
 
 		_, err = uploaders.DeployFileWithMeta(pth, buildURL, buildAPIToken, "ios-xcarchive", fakeMeta)
