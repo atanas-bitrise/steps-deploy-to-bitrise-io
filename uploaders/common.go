@@ -202,6 +202,10 @@ func finishArtifact(buildURL, token, artifactID, artifactInfo, notifyUserGroups,
 	if isEnablePublicPage == "true" {
 		data["is_enable_public_page"] = []string{"yes"}
 	}
+	fmt.Println("data")
+	for key, value := range data {
+		fmt.Println(key, ": ", value)
+	}
 	// ---
 
 	// perform request
