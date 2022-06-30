@@ -69,8 +69,6 @@ func PushPipelineIntermediateFiles(fileList, buildURL, buildAPIToken string) err
 			EnvKey: key,
 		}
 
-		fmt.Printf("meta: %v\n", meta)
-
 		_, err = uploaders.DeployFileWithMeta(pth, buildURL, buildAPIToken, meta)
 		if err != nil {
 			return fmt.Errorf("failed to push pipeline intermediate file (%s): %s", pth, err)

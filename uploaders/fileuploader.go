@@ -20,6 +20,7 @@ func DeployFileWithMeta(pth, buildURL, token string, meta interface{}) (Artifact
 			return ArtifactURLs{}, fmt.Errorf("failed to marshal meta: %s", err)
 		}
 	}
+	fmt.Printf("meta: %s\n", string(metaBytes))
 
 	uploadURL, artifactID, err := createArtifact(buildURL, token, pth, "file", "")
 	if err != nil {
