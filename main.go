@@ -75,11 +75,6 @@ func main() {
 	fmt.Println()
 	log.SetEnableDebugLog(config.DebugMode)
 
-	log.Infof("Pushing pipeline intermediate files")
-	if err := PushPipelineIntermediateFiles(config.PipelineIntermediateFiles, config.BuildURL, config.APIToken); err != nil {
-		fail("Failed to push pipeline intermediate files: %s", err)
-	}
-
 	absDeployPth, err := pathutil.AbsPath(config.DeployPath)
 	if err != nil {
 		fail("Failed to expand path: %s, error: %s", config.DeployPath, err)
@@ -114,6 +109,11 @@ func main() {
 		fail("%s", err)
 	}
 	deployTestResults(config)
+
+	log.Infof("Pushing pipeline intermediate files")
+	if err := PushPipelineIntermediateFiles(config.PipelineIntermediateFiles, config.BuildURL, config.APIToken); err != nil {
+		fail("Failed to push pipeline intermediate files: %s", err)
+	}
 }
 
 func exportInstallPages(artifactURLCollection ArtifactURLCollection, config Config) error {
