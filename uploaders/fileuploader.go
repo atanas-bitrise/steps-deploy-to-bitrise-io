@@ -7,11 +7,11 @@ import (
 
 // DeployFile ...
 func DeployFile(pth, buildURL, token string) (ArtifactURLs, error) {
-	return DeployFileWithMeta(pth, buildURL, token, nil)
+	return DeployFileWithMeta(pth, buildURL, token, "file", nil)
 }
 
 // DeployFileWithMeta ...
-func DeployFileWithMeta(pth, buildURL, token string, meta interface{}) (ArtifactURLs, error) {
+func DeployFileWithMeta(pth, buildURL, token, artifactType string, meta interface{}) (ArtifactURLs, error) {
 	var metaBytes []byte
 	if meta != nil {
 		var err error
@@ -22,7 +22,7 @@ func DeployFileWithMeta(pth, buildURL, token string, meta interface{}) (Artifact
 	}
 	fmt.Printf("meta: %s\n", string(metaBytes))
 
-	uploadURL, artifactID, err := createArtifact(buildURL, token, pth, "file", "")
+	uploadURL, artifactID, err := createArtifact(buildURL, token, pth, artifactType, "")
 	if err != nil {
 		return ArtifactURLs{}, fmt.Errorf("failed to create file artifact, error: %s", err)
 	}

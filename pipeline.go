@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"path/filepath"
 	"strings"
@@ -69,7 +70,18 @@ func PushPipelineIntermediateFiles(fileList, buildURL, buildAPIToken string) err
 			EnvKey: key,
 		}
 
-		_, err = uploaders.DeployFileWithMeta(pth, buildURL, buildAPIToken, meta)
+		b, err := json.Marshal(meta)
+		if err != nil {
+			return err
+		}
+
+		fakeMeta := map[string]interface{}{
+			"file_size_bytes": "",
+			"app_info":        string(b),
+			"scheme":          "",
+		}
+
+		_, err = uploaders.DeployFileWithMeta(pth, buildURL, buildAPIToken, "ios-xcarchive", fakeMeta)
 		if err != nil {
 			return fmt.Errorf("failed to push pipeline intermediate file (%s): %s", pth, err)
 		}
