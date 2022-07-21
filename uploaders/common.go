@@ -17,6 +17,7 @@ import (
 	"github.com/bitrise-io/go-utils/log"
 	"github.com/bitrise-io/go-utils/retry"
 	"github.com/bitrise-io/go-utils/urlutil"
+	"github.com/bitrise-steplib/steps-deploy-to-bitrise-io/deployment"
 )
 
 // ArtifactURLs ...
@@ -192,12 +193,7 @@ type AppDeploymentMetaData struct {
 	IsEnablePublicPage string
 }
 
-type PipelineIntermediateFileMetaData struct {
-	EnvKey string `json:"env_key"`
-	IsDir  bool   `json:"is_dir"`
-}
-
-func finishArtifact(buildURL, token, artifactID string, appDeploymentMeta *AppDeploymentMetaData, pipelineMeta *PipelineIntermediateFileMetaData) (ArtifactURLs, error) {
+func finishArtifact(buildURL, token, artifactID string, appDeploymentMeta *AppDeploymentMetaData, pipelineMeta *deployment.IntermediateFileMetaData) (ArtifactURLs, error) {
 	log.Printf("finishing artifact")
 
 	// create form data
@@ -228,7 +224,7 @@ func finishArtifact(buildURL, token, artifactID string, appDeploymentMeta *AppDe
 	if pipelineMeta != nil {
 		pipelineInfoBytes, err := json.Marshal(pipelineMeta)
 		if err != nil {
-			return ArtifactURLs{}, fmt.Errorf("failed to marshal pipeline meta: %s", err)
+			return ArtifactURLs{}, fmt.Errorf("failed to marshal deployment meta: %s", err)
 		}
 
 		data["intermediate_file_info"] = []string{string(pipelineInfoBytes)}

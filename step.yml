@@ -86,7 +86,6 @@ inputs:
 
         If you specify a file path, then only the specified
         file will be deployed.
-      is_required: true
   - is_compress: "false"
     opts:
       category: Build Artifact Deployment
