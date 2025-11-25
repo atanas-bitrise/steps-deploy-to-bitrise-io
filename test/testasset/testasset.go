@@ -4,7 +4,6 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
-	"strings"
 )
 
 var AssetTypes = []string{".jpg", ".jpeg", ".png", ".txt", ".log"}
